@@ -6,25 +6,25 @@ def update_cansellonragfair(file_path, item_ids, value):
 
     for item_id in item_ids:
         if item_id in data:
-            data[item_id]["_props"]["CanSellOnRagFiar"] = value
+            data[item_id]["_props"]["CanSellOnRagfair"] = value
 
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(data, file, indent=2, ensure_ascii=False)
 
-    print("File updated scucesfully.")
+    print("File updated successfully.")
 
 def main():
     file_path = r'Aki_Data/Server/database/templates/items.json'
 
     while True:
-        item_ids_input = input('Enter item IDs, comma-separated. q to quit: "')
+        item_ids_input = input('Enter item IDs, comma-separated. q to quit: ')
 
         if item_ids_input.lower() == 'q':
             break
 
         item_ids = [item_id.strip() for item_id in item_ids_input.split(',')]
         value_input = input("Enter the desired value for CanSellOnRagFair (True/False): ")
-        value = value_input.lower() == 'true'
+        value = value_input.lower()
         update_cansellonragfair(file_path, item_ids, value)
 
 if __name__ == '__main__':
