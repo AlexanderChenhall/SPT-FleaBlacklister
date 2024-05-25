@@ -17,7 +17,7 @@ def main():
     file_path = r'Aki_Data/Server/database/templates/items.json'
 
     while True:
-        item_ids_input = input('Enter item IDs, comma-separated. q to quit: ')
+        item_ids_input = input("Enter item IDs, comma-separated. q to quit: ")
 
         if item_ids_input.lower() == 'q':
             break
