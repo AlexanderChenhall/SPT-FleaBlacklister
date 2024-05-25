@@ -13,8 +13,24 @@ def update_cansellonragfair(file_path, item_ids, value):
 
     print("File updated scucesfully.")
 
-file_path = r'Aki_Data/Server/database/templates/items.json'
-item_ids = ['5672cb124bdc2d1a0f8b4568', '5672cb304bdc2dc2088b456a', '5672cb724bdc2dc2088b456b']
-value = True
+def main():
+    file_path = r'Aki_Data/Server/database/templates/items.json'
 
-update_cansellonragfair(file_path, item_ids, value)
+    while True:
+        item_ids_input = input('Enter item IDs, comma-separated. q to quit: "')
+
+        if item_ids_input.lower() == 'q':
+            break
+
+        item_ids = [item_id.strip() for item_id in item_ids_input.split(',')]
+        value_input = input("Enter the desired value for CanSellOnRagFair (True/False): ")
+        value = value_input.lower() == 'true'
+        update_cansellonragfair(file_path, item_ids, value)
+
+if __name__ == '__main__':
+    main()
+
+# item_ids = ['5672cb124bdc2d1a0f8b4568', '5672cb304bdc2dc2088b456a', '5672cb724bdc2dc2088b456b']
+# value = True
+#
+# update_cansellonragfair(file_path, item_ids, value)
