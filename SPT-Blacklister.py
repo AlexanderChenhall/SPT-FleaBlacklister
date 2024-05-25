@@ -1,27 +1,20 @@
+import json
+
 def update_cansellonragfair(file_path, item_ids, value):
-    with open(file_path, 'r') as file:
-        lines = file.readlines()
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
 
-    updated_lines = []
-    current_item_id = None
+    for item_id in item_ids:
+        if item_id in data:
+            data[item_id]["_props"]["CanSellOnRagFiar"] = value
 
-    for line in lines:
-        if any(item_id in line for item_id in item_ids):
-            current_item_id = line.strip().strip('"')
+    with open(file_path, 'w', encoding='utf-8') as file:
+        json.dump(data, file, indent=2, ensure_ascii=False)
 
-        if current_item_id and '"cansellonragfair":' in line:
-            line = line.replace('"CanSellOnRagfair": true', f'"CanSellOnRagfair": {str(value).lower()}')
-            line = line.replace('"CanSellOnRagfair": false', f'"CanSellOnRagfair": {str(value).lower()}')
-            current_item_id = None
+    print("File updated scucesfully.")
 
-        updated_lines.append(line)
-
-    with open(file_path, 'w') as file:
-        file.writelines(updated_lines)
-
-# Example usage
-file_path = r"Aki_Data\Server\database\templates.json"
-item_ids = ['id1', 'id2', 'id3']  # Replace with your actual item IDs
-value = True  # Set to True or False depending on your desired value
+file_path = r'Aki_Data/Server/database/templates/items.json'
+item_ids = ['5672cb124bdc2d1a0f8b4568', '5672cb304bdc2dc2088b456a', '5672cb724bdc2dc2088b456b']
+value = True
 
 update_cansellonragfair(file_path, item_ids, value)
