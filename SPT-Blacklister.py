@@ -1,34 +1,45 @@
 import json
+import re
 
-def update_cansellonragfair(file_path, item_ids, value):
+def update_cansellonragfair(file_path, item_id, value):
     with open(file_path, 'r', encoding='utf-8') as file:
         data = json.load(file)
 
-    for item_id in item_ids:
-        if item_id in data:
-            data[item_id]["_props"]["CanSellOnRagfair"] = value
+    if item_id in data:
+        data[item_id]["_props"]["CanSellOnRagfair"] = value
 
-    with open(file_path, 'w', encoding='utf-8') as file:
-        json.dump(data, file, indent=2, ensure_ascii=False)
+        with open(file_path, 'w', encoding='utf-8') as file:
+            json.dump(data, file, indent=2, ensure_ascii=False)
 
-    print("File updated successfully.")
+        print(f"{data[item_id]['_name']} was changed to {value}")
+    else:
+        print("Invalid item ID. Please enter a valid ID.")
 
 def main():
-    file_path = r'Aki_Data/Server/database/templates/items.json'
+    file_path = 'Aki_Data/Server/Database/templates/items.json'
+    valid_id_length = 24
+    cansellonragfair_value = False
 
     while True:
-        item_ids_input = input("Enter item IDs, comma-separated. q to quit: ")
+        print(f"Current blacklist value: {cansellonragfair_value}")
 
-        if item_ids_input.lower() == 'q':
+        item_id = input("Enter an item ID (or 'q' to quit, 'r' to toggle blacklist value true or false): ")
+
+        if item_id.lower() == 'q':
             break
 
-        item_ids_input = item_ids_input.replace('"', '').replace("'", "").replace(" ", "")
-        item_ids = [item_id.strip() for item_id in item_ids_input.split(',')]
-        value_input = input("Enter the desired value for CanSellOnRagFair (True/False): ")
-        value = value_input.lower()
-        update_cansellonragfair(file_path, item_ids, value)
+        if item_id.lower() == 'r':
+            cansellonragfair_value = not cansellonragfair_value
+            print(f"Setting blacklist value to {cansellonragfair_value}")
+            continue
+
+        item_id = re.sub(r'[^a-zA-Z0-9]', '', item_id)
+
+        if len(item_id) != valid_id_length:
+            print("Invalid ID. Please enter valid ID's")
+
+        update_cansellonragfair(file_path, item_id, cansellonragfair_value)
 
 if __name__ == '__main__':
     main()
 
-# test item_ids = ['5672cb124bdc2d1a0f8b4568', '5672cb304bdc2dc2088b456a', '5672cb724bdc2dc2088b456b']
